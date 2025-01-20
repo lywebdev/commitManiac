@@ -1,0 +1,36 @@
+name: Run PHP Script Daily
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          
+      - uses: php-actions/composer@v6
+
+      - name: Set up environment variables
+        run: |
+          echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
+          echo "OWNER=${{ secrets.OWNER }}" >> $GITHUB_ENV
+          echo "REPO=${{ secrets.REPO }}" >> $GITHUB_ENV
+          export APIKEY=${{ secrets.APIKEY }}
+          export OWNER=${{ secrets.OWNER }}
+          export REPO=${{ secrets.REPO }}
+
+      - name: Random Delay
+        run: |
+          # Generation random delay
+          RANDOM_DELAY=$((RANDOM % 10))
+          echo "Random delay: $RANDOM_DELAY seconds"
+          sleep $RANDOM_DELAY
+
+      - name: Run Script
+        run: php ./public/index.php

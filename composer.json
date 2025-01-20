@@ -1,0 +1,23 @@
+{
+    "name": "lkwebdev/commit-maniac",
+    "description": "This utility automates the process of making daily commits to your GitHub repository. The goal of the project is to maintain activity and create a visually appealing \"green\" contribution graph on your GitHub profile by adding commits every day",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "App\\Infrastructure\\": "Infrastructure/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kulik Leonid",
+            "email": "lyonyauei@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "guzzlehttp/guzzle": "^7.9",
+        "vlucas/phpdotenv": "^5.6",
+        "php-di/php-di": "^7.0"
+    }
+}
