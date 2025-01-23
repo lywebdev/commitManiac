@@ -52,8 +52,8 @@ try {
     $content = $randomQuote->getQuote();
     $commitMessage = $randomQuote->getAuthor();
 } catch (Exception $exception) {
-    $content = "big changes are coming...";
-    $commitMessage = 'there will definitely be changes starting tomorrow';
+    $content = 'Big changes are coming...';
+    $commitMessage = 'There will definitely be changes starting tomorrow';
 }
 
 $currentDate = date('d.m.y');

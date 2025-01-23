@@ -25,12 +25,5 @@ jobs:
           export OWNER=${{ secrets.OWNER }}
           export REPO=${{ secrets.REPO }}
 
-      - name: Random Delay
-        run: |
-          # Generation random delay
-          RANDOM_DELAY=$((RANDOM % 10))
-          echo "Random delay: $RANDOM_DELAY seconds"
-          sleep $RANDOM_DELAY
-
       - name: Run Script
         run: php ./public/index.php
