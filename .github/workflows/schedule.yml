@@ -28,6 +28,7 @@ jobs:
         id: generate
         env:
           COMMITMANIAC_TIMEZONE: Europe/Amsterdam
+          COMMITMANIAC_RUN_MARKER: ${{ github.run_id }}-${{ github.run_attempt }}
         run: php ./public/index.php
 
       - name: Commit and push daily entry

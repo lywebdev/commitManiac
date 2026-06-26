@@ -14,8 +14,8 @@ final class FileCreationService
     ) {
     }
 
-    public function createDailyEntry(DateTimeImmutable $date): DailyCommitEntry
+    public function createDailyEntry(DateTimeImmutable $date, ?string $runMarker = null): DailyCommitEntry
     {
-        return $this->entryFactory->create($date);
+        return $this->entryFactory->create($date, $runMarker);
     }
 }

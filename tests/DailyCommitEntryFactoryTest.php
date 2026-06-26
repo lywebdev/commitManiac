@@ -39,6 +39,7 @@ $date = new DateTimeImmutable('2026-06-26 09:15:00', new DateTimeZone('Europe/Am
 $entry = $factory->create($date);
 $sameDayEntry = $factory->create($date);
 $nextDayEntry = $factory->create($date->modify('+1 day'));
+$workflowEntry = $factory->create($date, '123456789-1');
 
 assertSameValue('contents/26.06.26.txt', $entry->getPath(), 'Entry path should use the current day.');
 assertContainsText('# CommitManiac greenhouse log', $entry->getContent(), 'Entry should use the new original format.');
@@ -50,5 +51,7 @@ assertSameValue($entry->getCommitMessage(), $sameDayEntry->getCommitMessage(), '
 assertNotSameValue($entry->getContent(), $nextDayEntry->getContent(), 'Entry content should change on the next day.');
 assertNotSameValue($entry->getCommitMessage(), $nextDayEntry->getCommitMessage(), 'Commit message should change on the next day.');
 assertSameValue(1, preg_match('/^daily\(2026-06-26\): [a-z0-9 -]+$/', $entry->getCommitMessage()), 'Commit message should be concise and machine-friendly.');
+assertContainsText('Run: 123456789-1', $workflowEntry->getContent(), 'Workflow entry should include a run marker.');
+assertNotSameValue($entry->getContent(), $workflowEntry->getContent(), 'Workflow run marker should make same-day workflow reruns commit a file update.');
 
 echo 'DailyCommitEntryFactoryTest passed' . PHP_EOL;

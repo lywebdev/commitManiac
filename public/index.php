@@ -43,7 +43,10 @@ function publishGithubOutput(string $key, string $value): void
 $timezone = new DateTimeZone(envValue('COMMITMANIAC_TIMEZONE') ?? 'Europe/Amsterdam');
 $fileCreationService = new FileCreationService(new DailyCommitEntryFactory());
 $fileSaver = new FileSaver();
-$entry = $fileCreationService->createDailyEntry(new DateTimeImmutable('now', $timezone));
+$entry = $fileCreationService->createDailyEntry(
+    new DateTimeImmutable('now', $timezone),
+    envValue('COMMITMANIAC_RUN_MARKER')
+);
 $pathForSaving = dirname(__DIR__) . '/' . $entry->getPath();
 
 if (!$fileSaver->save($pathForSaving, $entry->getContent())) {

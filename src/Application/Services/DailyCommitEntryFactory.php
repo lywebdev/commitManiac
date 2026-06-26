@@ -48,7 +48,7 @@ final class DailyCommitEntryFactory
         'Turn a scheduled run into a tiny piece of project folklore.',
     ];
 
-    public function create(DateTimeImmutable $date): DailyCommitEntry
+    public function create(DateTimeImmutable $date, ?string $runMarker = null): DailyCommitEntry
     {
         $path = sprintf('contents/%s.txt', $date->format('d.m.y'));
         $isoDate = $date->format('Y-m-d');
@@ -75,6 +75,10 @@ final class DailyCommitEntryFactory
             'Seed: cm-' . $date->format('Ymd') . '-' . $checksum,
             '',
         ]);
+
+        if ($runMarker !== null && $runMarker !== '') {
+            $content .= 'Run: ' . $runMarker . PHP_EOL;
+        }
 
         return new DailyCommitEntry(
             $path,
