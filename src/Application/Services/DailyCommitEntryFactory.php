@@ -50,7 +50,12 @@ final class DailyCommitEntryFactory
 
     public function create(DateTimeImmutable $date, ?string $runMarker = null): DailyCommitEntry
     {
-        $path = sprintf('contents/%s.txt', $date->format('d.m.y'));
+        $path = sprintf(
+            'contents/%s/%s/%s.txt',
+            $date->format('Y'),
+            strtolower($date->format('F')),
+            $date->format('d')
+        );
         $isoDate = $date->format('Y-m-d');
         $seed = (int) sprintf('%u', crc32($isoDate . '|commit-maniac'));
 

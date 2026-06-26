@@ -41,10 +41,10 @@ $sameDayEntry = $factory->create($date);
 $nextDayEntry = $factory->create($date->modify('+1 day'));
 $workflowEntry = $factory->create($date, '123456789-1');
 
-assertSameValue('contents/26.06.26.txt', $entry->getPath(), 'Entry path should use the current day.');
+assertSameValue('contents/2026/june/26.txt', $entry->getPath(), 'Entry path should use the current year, month, and day.');
 assertContainsText('# CommitManiac greenhouse log', $entry->getContent(), 'Entry should use the new original format.');
 assertContainsText('Date: 2026-06-26', $entry->getContent(), 'Entry should include the ISO date.');
-assertContainsText('Path: contents/26.06.26.txt', $entry->getContent(), 'Entry should include the saved path.');
+assertContainsText('Path: contents/2026/june/26.txt', $entry->getContent(), 'Entry should include the saved path.');
 assertDoesNotContainText('Big changes are coming', $entry->getContent(), 'Entry should not fall back to the old generic text.');
 assertSameValue($entry->getContent(), $sameDayEntry->getContent(), 'Entry content should be deterministic for the same day.');
 assertSameValue($entry->getCommitMessage(), $sameDayEntry->getCommitMessage(), 'Commit message should be deterministic for the same day.');

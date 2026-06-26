@@ -1,7 +1,7 @@
 # CommitManiac greenhouse log
 
 Date: 2026-06-26
-Path: contents/26.06.26.txt
+Path: contents/2026/june/26.txt
 Signal: fresh leaf on the graph
 
 Daily fact:

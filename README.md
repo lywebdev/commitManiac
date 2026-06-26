@@ -7,10 +7,10 @@ The note is generated locally, so the project no longer depends on a quote API, 
 
 Every run creates a deterministic daily "greenhouse log":
 
-- `contents/dd.mm.yy.txt`
+- `contents/YYYY/month/dd.txt`, for example `contents/2026/june/26.txt`
 - a short Git/GitHub/dev fact
 - a daily signal and ritual line
-- a stable seed so rerunning the same day does not create noisy extra commits
+- a stable seed, plus a workflow run marker when GitHub Actions needs a real same-day update
 
 ## How to use
 
