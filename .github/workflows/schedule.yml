@@ -1,29 +1,50 @@
-name: Run PHP Script Daily
+name: Publish CommitManiac Entry
+
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '23 3 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
-  run-script:
+  publish-entry:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           
-      - uses: php-actions/composer@v6
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
 
-      - name: Set up environment variables
-        run: |
-          echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
-          echo "OWNER=${{ secrets.OWNER }}" >> $GITHUB_ENV
-          echo "REPO=${{ secrets.REPO }}" >> $GITHUB_ENV
-          export APIKEY=${{ secrets.APIKEY }}
-          export OWNER=${{ secrets.OWNER }}
-          export REPO=${{ secrets.REPO }}
-
-      - name: Run Script
+      - name: Generate daily entry
+        id: generate
+        env:
+          COMMITMANIAC_TIMEZONE: Europe/Amsterdam
         run: php ./public/index.php
+
+      - name: Commit and push daily entry
+        env:
+          COMMIT_AUTHOR_NAME: ${{ vars.COMMIT_AUTHOR_NAME }}
+          COMMIT_AUTHOR_EMAIL: ${{ vars.COMMIT_AUTHOR_EMAIL }}
+          DEFAULT_AUTHOR_NAME: ${{ github.repository_owner }}
+        run: |
+          git add contents
+
+          if git diff --cached --quiet; then
+            echo "No content changes to commit."
+            exit 0
+          fi
+
+          git config user.name "${COMMIT_AUTHOR_NAME:-$DEFAULT_AUTHOR_NAME}"
+          git config user.email "${COMMIT_AUTHOR_EMAIL:-$DEFAULT_AUTHOR_NAME@users.noreply.github.com}"
+
+          git commit -m "${{ steps.generate.outputs.commit_message }}"
+          git push

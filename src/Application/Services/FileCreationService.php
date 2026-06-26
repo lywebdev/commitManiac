@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Application\Services;
 
-use App\Domain\Entities\RandomQuoteEntity;
-use App\Infrastructure\RandomQuoteApiClient;
+use App\Domain\Entities\DailyCommitEntry;
+use DateTimeImmutable;
 
 final class FileCreationService
 {
-    private RandomQuoteApiClient $apiClient;
-
-    public function __construct(RandomQuoteApiClient $apiClient)
-    {
-        $this->apiClient = $apiClient;
+    public function __construct(
+        private DailyCommitEntryFactory $entryFactory
+    ) {
     }
 
-    public function getRandomQuote(): RandomQuoteEntity
+    public function createDailyEntry(DateTimeImmutable $date): DailyCommitEntry
     {
-        return $this->apiClient->fetchRandomQuote();
+        return $this->entryFactory->create($date);
     }
 }

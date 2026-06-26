@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Application\Services\FileCreationService;
 use App\Application\Services\FileUploadService;
-use App\Domain\Entities\RandomQuoteEntity;
+use App\Application\Services\DailyCommitEntryFactory;
 use App\Infrastructure\FileSaver;
 use App\Infrastructure\GitHubRepository;
 use App\UI\GitHubFileUploader;
-use DI\ContainerBuilder;
 use Dotenv\Dotenv;
-use function DI\autowire;
 
 // Load environment variables
 try {
@@ -20,48 +18,52 @@ try {
     $dotenv->safeLoad();
 } catch (Exception $exception) {}
 
-$owner = getenv('OWNER') ?: $_ENV['OWNER'] ?? null;
-$repo = getenv('REPO') ?: $_ENV['REPO'] ?? null;
-$apikey = getenv('APIKEY') ?: $_ENV['APIKEY'] ?? null;
+function envValue(string $name): ?string
+{
+    $value = getenv($name);
 
-if (!$owner || !$repo || !$apikey) {
-    exit('No environment variables were found');
+    if ($value === false || $value === '') {
+        $value = $_ENV[$name] ?? null;
+    }
+
+    return $value !== '' ? $value : null;
 }
 
-// Configure dependency injection container
-$containerBuilder = new ContainerBuilder();
-$containerBuilder->addDefinitions([
-    GitHubRepository::class => fn() => new GitHubRepository($apikey),
-    FileUploadService::class => fn($c) => new FileUploadService($c->get(GitHubRepository::class)),
-    GitHubFileUploader::class => fn($c) => new GitHubFileUploader($c->get(FileUploadService::class)),
-    RandomQuoteEntity::class => autowire(),
-    FileSaver::class => autowire(),
-    FileCreationService::class => autowire(),
-]);
+function publishGithubOutput(string $key, string $value): void
+{
+    $outputFile = getenv('GITHUB_OUTPUT');
 
-$container = $containerBuilder->build();
+    if ($outputFile === false || $outputFile === '') {
+        return;
+    }
 
-// Fetch dependencies from container
-$gitHubFileUploader = $container->get(GitHubFileUploader::class);
-$fileCreationService = $container->get(FileCreationService::class);
-$fileSaver = $container->get(FileSaver::class);
-
-
-try {
-    $randomQuote = $fileCreationService->getRandomQuote();
-    $content = $randomQuote->getQuote();
-    $commitMessage = $randomQuote->getAuthor();
-} catch (Exception $exception) {
-    $content = 'Big changes are coming...';
-    $commitMessage = 'There will definitely be changes starting tomorrow';
+    file_put_contents($outputFile, $key . '=' . $value . PHP_EOL, FILE_APPEND);
 }
 
-$currentDate = date('d.m.y');
-$path = 'contents/' . date('d.m.y') . '.txt';
-$pathForSaving = __DIR__ . "/$path";
+$timezone = new DateTimeZone(envValue('COMMITMANIAC_TIMEZONE') ?? 'Europe/Amsterdam');
+$fileCreationService = new FileCreationService(new DailyCommitEntryFactory());
+$fileSaver = new FileSaver();
+$entry = $fileCreationService->createDailyEntry(new DateTimeImmutable('now', $timezone));
+$pathForSaving = dirname(__DIR__) . '/' . $entry->getPath();
 
-if (!$fileSaver->save($pathForSaving, $content)) {
+if (!$fileSaver->save($pathForSaving, $entry->getContent())) {
     exit('Something went wrong');
 }
 
-$gitHubFileUploader->upload($owner, $repo, $path, $content, $commitMessage);
+$owner = envValue('OWNER');
+$repo = envValue('REPO');
+$apikey = envValue('APIKEY');
+
+publishGithubOutput('content_path', $entry->getPath());
+publishGithubOutput('commit_message', $entry->getCommitMessage());
+
+echo 'Daily entry saved: ' . $entry->getPath() . PHP_EOL;
+echo 'Commit message: ' . $entry->getCommitMessage() . PHP_EOL;
+
+if ($owner && $repo && $apikey) {
+    $gitHubFileUploader = new GitHubFileUploader(
+        new FileUploadService(new GitHubRepository($apikey))
+    );
+
+    $gitHubFileUploader->upload($owner, $repo, $entry->getPath(), $entry->getContent(), $entry->getCommitMessage());
+}

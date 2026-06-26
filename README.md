@@ -1,17 +1,47 @@
 # CommitManiac
 
-CommitManiac is a program that automatically publishes changes to a GitHub repository, making your activity statistics "green."
+CommitManiac keeps a repository active by publishing one small daily note into `contents/`.
+The note is generated locally, so the project no longer depends on a quote API, paid service, or personal access token.
 
-## How to use?
-1. Create your own repository
-2. Clone the contents of the current repository to yours
-3. Configure environment variables in your repository: `Settings -> Secrets and variables -> Actions`, create the following variables:
-- `APIKEY` - contains a token with the access rights to make changes to the repository (information about this can be found on third-party websites)
-- `OWNER` - GitHub username (for example, for my profile https://github.com/lywebdev, the username will be lywebdev)
-- `REPO` - repository slug (for example, for the current repository https://github.com/lywebdev/commitManiac, the slug will be commitManiac)
+## What gets published?
 
-## Nuances
-In this version of the program, a random quote is published, obtained from [this service](https://quoteslate.vercel.app).
+Every run creates a deterministic daily "greenhouse log":
+
+- `contents/dd.mm.yy.txt`
+- a short Git/GitHub/dev fact
+- a daily signal and ritual line
+- a stable seed so rerunning the same day does not create noisy extra commits
+
+## How to use
+
+1. Create or fork a repository.
+2. Enable GitHub Actions.
+3. Keep `.github/workflows/schedule.yml` on the default branch.
+4. Optional but recommended: set repository variables in `Settings -> Secrets and variables -> Actions -> Variables`:
+   - `COMMIT_AUTHOR_NAME` - your GitHub name or username.
+   - `COMMIT_AUTHOR_EMAIL` - an email attached to your GitHub account.
+
+The workflow uses GitHub's built-in `GITHUB_TOKEN` and `contents: write` permission, so no `APIKEY`, `OWNER`, or `REPO` secret is required for the normal daily mode.
+
+If the contribution graph does not turn green, check that `COMMIT_AUTHOR_EMAIL` is verified on your GitHub account and that the commits land on the default branch.
+
+## Running locally
+
+```bash
+composer install
+composer test
+php ./public/index.php
+```
+
+The script uses `Europe/Amsterdam` by default. Override it with:
+
+```bash
+COMMITMANIAC_TIMEZONE=UTC php ./public/index.php
+```
+
+## Why this changed
+
+The previous version depended on QuoteSlate. When that service rate-limits or changes behavior, CommitManiac falls back to generic text. The current version generates original content locally, which keeps the daily run free and reliable.
 
 **Feel free to thank by giving a star to this repository!**
 

@@ -8,6 +8,9 @@
             "App\\Infrastructure\\": "Infrastructure/"
         }
     },
+    "scripts": {
+        "test": "php tests/DailyCommitEntryFactoryTest.php"
+    },
     "authors": [
         {
             "name": "Kulik Leonid",
