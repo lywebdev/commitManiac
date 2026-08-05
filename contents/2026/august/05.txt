@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-08-05
+Path: contents/2026/august/05.txt
+Signal: tiny proof of work
+
+Daily fact:
+A repository can be quiet in code and still alive in history when automation leaves a useful trace.
+
+Ritual:
+Keep the change small enough that tomorrow can understand it.
+
+Seed: cm-20260805-dd3adc6e6b65
+Run: 30980081044-1
