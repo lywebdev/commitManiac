@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-08-07
+Path: contents/2026/august/07.txt
+Signal: scheduled pulse
+
+Daily fact:
+Cron schedules in GitHub Actions run on UTC time, so local dates need an explicit timezone.
+
+Ritual:
+Let the automation do the watering while the codebase stays calm.
+
+Seed: cm-20260807-d0fd3bb8c849
+Run: 31149597651-1
