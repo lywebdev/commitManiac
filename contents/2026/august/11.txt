@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-08-11
+Path: contents/2026/august/11.txt
+Signal: automation footprint
+
+Daily fact:
+Git stores snapshots, not file-by-file diffs, and then compresses similar objects efficiently.
+
+Ritual:
+Keep the habit free, local, and easy to restart.
+
+Seed: cm-20260811-354b5fc71e5f
+Run: 31459444396-1
