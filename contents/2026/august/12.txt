@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-08-12
+Path: contents/2026/august/12.txt
+Signal: fresh leaf on the graph
+
+Daily fact:
+Small commits are easier to review, revert, and explain than large mixed changes.
+
+Ritual:
+Write one honest line, save it, and move on.
+
+Seed: cm-20260812-6d9f205f6a4f
+Run: 31565613267-1
