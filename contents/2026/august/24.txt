@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-08-24
+Path: contents/2026/august/24.txt
+Signal: calendar checkpoint
+
+Daily fact:
+A green graph is built one eligible commit at a time, not by making today carry every idea.
+
+Ritual:
+Use the date as the seed and the repository as the canvas.
+
+Seed: cm-20260824-e3b3e381ed37
+Run: 32689050000-1
