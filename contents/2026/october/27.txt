@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-10-27
+Path: contents/2026/october/27.txt
+Signal: one-file ritual
+
+Daily fact:
+Commit messages age better when they say what changed instead of how hard it was.
+
+Ritual:
+Make the commit useful to humans and eligible for the graph.
+
+Seed: cm-20261027-1fb330b55a93
+Run: 40478787769-1
