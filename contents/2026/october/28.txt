@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-10-28
+Path: contents/2026/october/28.txt
+Signal: daily green spark
+
+Daily fact:
+A boring daily task becomes reliable when it has no external API in its critical path.
+
+Ritual:
+Leave a readable artifact instead of a random blob.
+
+Seed: cm-20261028-988dbad202ff
+Run: 40667503164-1
