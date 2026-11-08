@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-11-08
+Path: contents/2026/november/08.txt
+Signal: steady commit trace
+
+Daily fact:
+A commit hash changes when any tracked byte in its tree or metadata changes.
+
+Ritual:
+Commit the signal, not the noise.
+
+Seed: cm-20261108-735d5ae06508
+Run: 42472080011-1
