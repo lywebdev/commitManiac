@@ -1,0 +1,14 @@
+# CommitManiac greenhouse log
+
+Date: 2026-11-23
+Path: contents/2026/november/23.txt
+Signal: quiet repository heartbeat
+
+Daily fact:
+Generated files are safest when the generator is deterministic for the same input date.
+
+Ritual:
+Prefer a deterministic note over a flaky dependency.
+
+Seed: cm-20261123-caa33d5a7de7
+Run: 45182332899-1
